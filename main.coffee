@@ -2,9 +2,8 @@
 
 class $blab.BasicAnimation
     
-    contructor: (@spec)->
-
-        @n = 1
+    constructor: (@spec)->
+        @n = 0
         @animateId = null
         @snapshotFunction = @spec.snapshotFunction
         @numSnapshots = @spec.numSnapshots
@@ -12,19 +11,17 @@ class $blab.BasicAnimation
         @strobeInterval = @spec.strobeInterval
         @delay = @spec.delay
         
-        
     stopAnimation: ->
         clearTimeout @animateId if @animateId
         @animateId = null
 
     animate: ->
         @stopAnimation()
-        console.log "n>>>", @n
         snapshot = =>
             @snapshotFunction()
-            @n++
             @stopAnimation() if @n>@numSnapshots
             @strobeFunction() if @n%@strobeInterval==0
+            @n++
 
         @animateId = setInterval (-> snapshot()), @delay
         
